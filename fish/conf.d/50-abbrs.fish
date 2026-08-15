@@ -1,0 +1,48 @@
+# Set up abbreviations
+
+# Git related cmds - anything more complicated, I want to think about
+abbr -a ga git add .
+abbr -a gbl 'git branch --list|cat'
+abbr -a gc git commit -S
+abbr -a gco git checkout
+abbr -a gd git diff
+abbr -a gf git fetch
+abbr -a gh git push
+abbr -a gl git log
+abbr -a gm git mv
+abbr -a gp git pull
+abbr -a gs git status
+abbr -a gtl 'git tag --list|cat'
+abbr -a gsw git switch
+
+# dotfile installation scripts - single quotes intentional
+abbr -a aI '$DEVEL_DOTFILES_GIT_REPO/bin/allInstall'
+abbr -a dI '$DEVEL_DOTFILES_GIT_REPO/bin/develInstall'
+abbr -a bI '$BASH_DOTFILES_GIT_REPO/bin/bashInstall'
+abbr -a fI '$FISH_DOTFILES_GIT_REPO/bin/fishInstall'
+abbr -a nI '$NVIM_DOTFILES_GIT_REPO/bin/nvimInstall'
+
+# Python virtual environment related
+abbr -a pl pip list | cat
+abbr -a -- ipy ipython --TerminalInteractiveShell.editing_mode=vi
+
+# Jump locations
+abbr dal -a --position anywhere --set-cursor ~/devel/scheller-linux-archive/adminLogs/%
+abbr dbm -a --position anywhere --set-cursor ~/devel/pypi/bm/%
+abbr dex -a --position anywhere --set-cursor /extra/grs/%
+abbr dfp -a --position anywhere --set-cursor ~/devel/pypi/fp/%
+abbr dnt -a --position anywhere --set-cursor ~/devel/scheller-linux-archive/notes/%
+
+# other aliases
+abbr -a dp digpath
+abbr -a -- pst ps -ejH
+abbr -a nv nvim
+abbr -a pa 'string join \n $PATH'
+# Website scrapping - pull down a subset of a website
+abbr -a Wget -- /usr/bin/wget -p --convert-links -e robots=off
+# Pull down more -- Not good for large websites
+abbr WgetM -- /usr/bin/wget --mirror -p --convert-links -e robots=off
+
+# Shell environment cmds
+abbr -a re 'cd; REDO_FISH_ENV=yes fish'
+abbr -a ue 'UPDATE_FISH_ENV=yes fish'
