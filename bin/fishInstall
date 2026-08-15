@@ -18,10 +18,9 @@ export DOTFILE_GIT_REPOS="${DOTFILE_GIT_REPOS:=$HOME/devel/dotfiles}"
 
 export DF_ACTION=install
 
-# export DOTFILES_GIT_REPO="${FISH_DOTFILES_GIT_REPO:=$DOTFILE_GIT_REPOS/fish_dotfiles}"
-export DOTFILES_GIT_REPO="${FISH_DOTFILES_GIT_REPO:=$DOTFILE_GIT_REPOS}"
-cd "$DOTFILES_GIT_REPO/home" || {
-    printf '%s: failed to cd into %s\n' "$SCRIPT_NAME" "$DOTFILES_GIT_REPO/home" >&2
+export DOTFILES_GIT_REPO="${FISH_DOTFILES_GIT_REPO:=$DOTFILE_GIT_REPOS/fish-dotfiles}"
+cd "$DOTFILES_GIT_REPO/fish" || {
+    printf '%s: failed to cd into %s\n' "$SCRIPT_NAME" "$DOTFILES_GIT_REPO/fish" >&2
     exit 1
 }
 
@@ -90,10 +89,7 @@ config_files='
     fish_plugins
 '
 
-remove_items="
-    $XDG_CONFIG_HOME/fish/conf.d/00-ensure-or-redo-init-env.fish
-    $XDG_CONFIG_HOME/conf.d/dotfiles.fish
-"
+remove_items=''
 
 dirs_to_create=""
 
@@ -115,7 +111,7 @@ fish_plugins='
 case "$DF_ACTION" in
     install|check|remove)
         # Install Fish config files
-        process_files "$XDG_CONFIG_HOME/fish" "$config_files" config/fish 0644
+        process_files "$XDG_CONFIG_HOME/fish" "$config_files" . 0644
         chmod 0755 "$XDG_CONFIG_HOME/fish"
 
         # Remove/report no longer needed files and directories
@@ -141,7 +137,7 @@ test "$DF_ACTION" = install && {
         install_plugins=yes
         if ! test -f "$XDG_CONFIG_HOME"/fish/functions/fisher.fish
         then
-            # Just install fisher
+            # First just install fisher
             rm -f "$XDG_CONFIG_HOME"/fish/fish_plugins
             if ! fish -c df_install_fisher
             then
@@ -156,6 +152,7 @@ test "$DF_ACTION" = install && {
             for plugin in $fish_plugins
             do
                 has_plugin=no
+                just_installed=no
 
                 for fisher_plugin in $fisher_list
                 do
@@ -168,9 +165,21 @@ test "$DF_ACTION" = install && {
 
                 if test "$has_plugin" = no
                 then
-                    fish -c "fisher install $plugin" && {
+                    if fish -c "fisher install $plugin"
+                    then
+                        just_installed=yes
+                    else
                         printf '%s: Failed to install fish plugin %s\n' "$SCRIPT_NAME" "$plugin" >&2
-                    }
+                    fi
+                fi
+
+                # Update plugin only if explicitly configured in $fish_plugins
+                if test "$just_installed" = no
+                then
+                    if ! fish -c "fisher update $plugin"
+                    then
+                        printf "%s: Failed to update fish plugin %s\n" "$SCRIPT_NAME" "$plugin" >&2
+                    fi
                 fi
             done
         fi
