@@ -17,19 +17,6 @@ if status is-interactive
     set -g fish_cursor_replace_one underscore
     set -g fish_cursor_visual underscore blink
 
-    # If installed, use pyenv to manage Python environments
-    if digpath -q -x pyenv
-        pyenv init - | source
-
-        # Set ve managed Python virtual environment
-        if set -q VE_VENV
-            ve (basename $VE_VENV) >/dev/null 2>&1
-        else
-            set -e PYTHONPATH
-            ve grs >/dev/null 2>&1
-        end
-    end
-
     # Set JDK_version managed Java environment
     if set -q JDK_VERSION
         jdk_version $JDK_VERSION

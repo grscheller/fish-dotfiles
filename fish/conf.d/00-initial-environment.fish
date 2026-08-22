@@ -62,8 +62,6 @@ and begin
     # Python configuration
     set -gx PIP_REQUIRE_VIRTUALENV true
     set -gx VE_VENV_DIR ~/devel/venvs
-    set -gx PYENV_ROOT ~/.local/share/pyenv
-    set -a PATH $PYENV_ROOT/bin
 
     # Add ~/bin at end of PATH
     set PATH $PATH ~/bin
