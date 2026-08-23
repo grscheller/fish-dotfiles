@@ -51,10 +51,6 @@ and begin
     test -e ~/.cargo/env.fish
     and set -p PATH ~/.cargo/bin
 
-    # Node.js toolchain
-    test -d ~/devel/node_lts/node-v22.14.0-linux-x64/bin
-    and set -p PATH ~/devel/node_lts/node-v22.14.0-linux-x64/bin
-
     # Mason's bin directory
     test -d ~/.local/share/nvim/mason/bin
     and set -p PATH ~/.local/share/nvim/mason/bin

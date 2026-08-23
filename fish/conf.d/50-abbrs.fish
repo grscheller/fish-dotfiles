@@ -3,7 +3,7 @@
 # Git related cmds - anything more complicated, I want to think about
 abbr -a ga git add .
 abbr -a gbl 'git branch --list|cat'
-abbr -a gc git commit -S
+abbr -a gc git commit
 abbr -a gco git checkout
 abbr -a gd git diff
 abbr -a gf git fetch
