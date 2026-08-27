@@ -21,7 +21,9 @@ if status is-interactive
     if set -q JDK_VERSION
         jdk_version $JDK_VERSION
     else
-        jdk_version 21
+        if test "$OS" != WindowsNT
+            jdk_version 21
+        end
     end
 
 end
