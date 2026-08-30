@@ -13,10 +13,9 @@
 #          lives until the user logs out.
 #
 
-status is-login
-and begin
+set -q FISH_VIRGIN_PATH_GRS
+or begin
     set -gx FISH_VIRGIN_PATH_GRS $PATH
-    set -gx FISH_LOGIN_SHELL_GRS $fish_pid
 
     # Set locale
     set -gx LANG en_US.utf8
@@ -61,20 +60,20 @@ and begin
 
     # For Windows, add locations for git and nvim
     set -l ProgFiles '/c/Program Files'
-    test -d $ProgFiles
-    and {
+    test -d "$ProgFiles"
+    and begin
         set -l git_path $ProgFiles/git/bin
         set -l nvim_path $ProgFiles/neovim/bin
-        test -x "$git_path/git.exe"
-        and set PATH $PATH $git_path 
-        test -x "$nvim_path/nvim.exe"
-        and set PATH $PATH $nvim_path 
-    }
+        test -e "$git_path/git.exe"
+        and set -a PATH $git_path
+        test -e "$nvim_path/nvim.exe"
+        and set -a PATH $nvim_path
+    end
 
     # Add ~/bin at end of PATH
-    set PATH $PATH ~/bin
+    set -a PATH ~/bin
 
     # Cleanup PATH: remove duplicate & nonexistent entries, resolve symlinks
-    set PATH (pathtrim)
+    set PATH (pathtrim $PATH)
 
 end
