@@ -59,6 +59,18 @@ and begin
     set -gx PIP_REQUIRE_VIRTUALENV true
     set -gx VE_VENV_DIR ~/devel/venvs
 
+    # For Windows, add locations for git and nvim
+    set -l ProgFiles '/c/Program Files'
+    test -d $ProgFiles
+    and {
+        set -l git_path $ProgFiles/git/bin
+        set -l nvim_path $ProgFiles/neovim/bin
+        test -x "$git_path/git.exe"
+        and set PATH $PATH $git_path 
+        test -x "$nvim_path/nvim.exe"
+        and set PATH $PATH $nvim_path 
+    }
+
     # Add ~/bin at end of PATH
     set PATH $PATH ~/bin
 
