@@ -62,8 +62,8 @@ or begin
     set -l ProgFiles '/c/Program Files'
     test -d "$ProgFiles"
     and begin
-        set -l git_path $ProgFiles/git/bin
-        set -l nvim_path $ProgFiles/neovim/bin
+        set -l git_path $ProgFiles/Git/cmd
+        set -l nvim_path $ProgFiles/Neovim/bin
         test -e "$git_path/git.exe"
         and set -a PATH $git_path
         test -e "$nvim_path/nvim.exe"
