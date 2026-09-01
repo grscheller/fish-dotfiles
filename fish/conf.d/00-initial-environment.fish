@@ -58,16 +58,19 @@ or begin
     set -gx PIP_REQUIRE_VIRTUALENV true
     set -gx VE_VENV_DIR ~/devel/venvs
 
-    # For Windows, add locations for git and nvim
-    set -l ProgFiles '/c/Program Files'
-    test -d "$ProgFiles"
+    # For Windows, locations for git, nvim and openssh
+    set -l prog_files '/c/Program Files'
+    test -d "$prog_files"
     and begin
-        set -l git_path $ProgFiles/Git/cmd
-        set -l nvim_path $ProgFiles/Neovim/bin
+        set -l git_path $prog_files/Git/cmd
+        set -l nvim_path $prog_files/Neovim/bin
+        set -l win_openssh_path /c/Windows/System32/OpenSSH
         test -e "$git_path/git.exe"
         and set -a PATH $git_path
         test -e "$nvim_path/nvim.exe"
         and set -a PATH $nvim_path
+        test -e "$win_openssh_path/ssh.exe"
+        and set -p PATH $win_openssh_path
     end
 
     # Add ~/bin at end of PATH
