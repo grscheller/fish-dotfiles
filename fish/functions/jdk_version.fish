@@ -1,56 +1,56 @@
 function jdk_version --description 'Setup JDK on Debian derived systems'
-    set -f jdkVersion
+    set -f jdk_version
 
     # Parse user input
     if test (count $argv) -gt 0
-        set jdkVersion (string split --no-empty --max 1 ' ' (string trim $argv[1]))
-        test (count $jdkVersion) -gt 1
-        and set jdkVersion $jdkVersion[1]
+        set jdk_version (string split --no-empty --max 1 ' ' (string trim $argv[1]))
+        test (count $jdk_version) -gt 1
+        and set jdk_version $jdk_version[1]
     end
 
     # Make sure at least one Java JDK is installed in default location
-    set -f jdir
-    set -f jvmDirs
-    set -f jvmDirsAndLinks /usr/lib/jvm/java-*-openjdk*
-    for jdir in $jvmDirsAndLinks
-        test -L $jdir
+    set -f jvm_dir
+    set -f jvm_dirs
+    set -f jvm_dirs_and_links /usr/lib/jvm/java-*-openjdk*
+    for jvm_dir in $jvm_dirs_and_links
+        test -L $jvm_dir
         and continue
-        test -d $jdir
-        and set -a jvmDirs $jdir
+        test -d $jvm_dir
+        and set -a jvm_dirs $jvm_dir
     end
-    if test -z "$jvmDirs"
+    if test -z "$jvm_dirs"
         printf 'No JDK environments installed\n' >&2
         return 1
     end
 
     # If user gave no arguments, print available java versions to stdout.
-    if test -z "$jdkVersion"
+    if test -z "$jdk_version"
         printf 'Available Java Versions:'
-        for jdir in $jvmDirs
-            set -l jdirSplit (string split - $jdir)
-            printf ' %s' $jdirSplit[2]
+        for jvm_dir in $jvm_dirs
+            set -l jvm_dirs_split (string split - $jvm_dir)
+            printf ' %s' $jvm_dirs_split[2]
         end
         printf '\n'
         return 0
     end
 
     # Sanity check user input
-    if not string match -qr '^\d+$' $jdkVersion[1]
-        printf 'Malformed JDK version number: "%s"\n' $jdkVersion >&2
+    if not string match -qr '^\d+$' $jdk_version[1]
+        printf 'Malformed JDK version number: "%s"\n' $jdk_version >&2
         return 1
     end
 
-    set -f javaHome /usr/lib/jvm/java-$jdkVersion-openjdk*
+    set -f java_home /usr/lib/jvm/java-$jdk_version*
 
     # Bail if Java version is not installed
-    if not test -d "$javaHome"
-        printf 'No JDK found for Java version %s in /usr/lib/jvm\n' $jdkVersion >&2
+    if not test -d "$java_home"
+        printf 'No JDK found for Java version %s in /usr/lib/jvm\n' $jdk_version >&2
         return 1
     end
 
     # Set JAVA_HOME
-    set -gx JAVA_HOME $javaHome
-    set -gx JDK_VERSION $jdkVersion
+    set -gx JAVA_HOME $java_home
+    set -gx JDK_VERSION $jdk_version
 
     # Fix PATH
     set -f index 0
@@ -62,10 +62,10 @@ function jdk_version --description 'Setup JDK on Debian derived systems'
     end
 
     if test $index -eq 0
-        set -p PATH $javaHome/bin
+        set -p PATH $java_home/bin
         set index 1
     else
-        set PATH[$index] $javaHome/bin
+        set PATH[$index] $java_home/bin
     end
 
     for ii in (seq (count $PATH) -1 (math $index + 1))
