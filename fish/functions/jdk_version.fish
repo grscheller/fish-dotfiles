@@ -28,7 +28,8 @@ function jdk_version --description 'Setup JDK on Debian derived systems'
         printf 'Available Java Versions:'
         for jvm_dir in $jvm_dirs
             set -l jvm_dirs_split (string split - $jvm_dir)
-            printf ' %s' $jvm_dirs_split[2]
+            set jvm_dirs_split (string split . $jvm_dirs_split[2])
+            printf ' %s' $jvm_dirs_split[1]
         end
         printf '\n'
         return 0
