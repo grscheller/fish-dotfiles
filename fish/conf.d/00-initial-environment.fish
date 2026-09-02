@@ -38,9 +38,12 @@ or begin
     # Haskell locations used by Stack and Cabal
     set -p PATH ~/.local/bin ~/.cabal/bin $PATH
 
-    # Configure JDK & Scala on Pop!OS
-    set -p PATH ~/.local/share/coursier/bin
-    jdk_version 21
+    # Configure JDK & Scala - /usr/lib/jvm is Debian/Ubuntu layout
+    test -d /usr/lib/jvm
+    and begin
+        set -p PATH ~/.local/share/coursier/bin
+        jdk_version 21
+    end
 
     # Zig toolchain
     test -L ~/devel/zig_nightly/current

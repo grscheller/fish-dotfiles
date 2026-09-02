@@ -1,4 +1,4 @@
-function jdk_version --description 'Setup JDK on Pop!OS Linux'
+function jdk_version --description 'Setup JDK on Debian derived systems'
     set -f jdkVersion
 
     # Parse user input
@@ -19,11 +19,11 @@ function jdk_version --description 'Setup JDK on Pop!OS Linux'
         and set -a jvmDirs $jdir
     end
     if test -z "$jvmDirs"
-        printf 'No JDK environments installed\n'
+        printf 'No JDK environments installed\n' >&2
         return 1
     end
 
-    # If user gave no arguments, print available java versions
+    # If user gave no arguments, print available java versions to stdout.
     if test -z "$jdkVersion"
         printf 'Available Java Versions:'
         for jdir in $jvmDirs
