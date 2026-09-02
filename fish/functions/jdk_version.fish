@@ -9,9 +9,16 @@ function jdk_version --description 'Setup JDK on Debian derived systems'
     end
 
     # Make sure at least one Java JDK is installed in default location
-    set -f jvm_dir
-    set -f jvm_dirs
-    set -f jvm_dirs_and_links /usr/lib/jvm/java-*-openjdk*
+    set -f jvm_dir jvm_dirs jvm_dirs_and_links
+    switch $GRS_OS
+        case windows
+            set jvm_dirs_and_links /c/Program\ Files/Eclipse\ Adoptium/jdk-*-hotspot
+        case macos
+            # set jvm_dirs_and_links /usr/lib/jvm/java-*-openjdk*
+            printf 'Not implemented yet for macos\n'
+        case linux
+            set jvm_dirs_and_links /usr/lib/jvm/java-*-openjdk*
+    end
     for jvm_dir in $jvm_dirs_and_links
         test -L $jvm_dir
         and continue

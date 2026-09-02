@@ -15,6 +15,16 @@
 
 set -q FISH_VIRGIN_PATH_GRS
 or begin
+
+    switch (uname -s)
+        case 'MSYS*' 'MINGW*' 'CYGWIN*'
+            set -gx GRS_OS windows
+        case Darwin
+            set -gx GRS_OS macos
+        case '*'
+            set -gx GRS_OS linux
+    end
+
     set -gx FISH_VIRGIN_PATH_GRS $PATH
 
     # Set locale
