@@ -42,7 +42,7 @@ or begin
     test -d /usr/lib/jvm
     and begin
         set -p PATH ~/.local/share/coursier/bin
-        jdk_version 21
+        jdk_version 25
     end
 
     # Zig toolchain
