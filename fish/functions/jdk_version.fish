@@ -1,3 +1,24 @@
+# Setup the JDK environment for the current fish instance.
+#
+# Assumptions, both of which are deliberate rather than incidental:
+#
+#   Linux    Debian/Ubuntu layout -- JDKs under /usr/lib/jvm named
+#            java-<ver>-openjdk-<arch>, with java-1.<ver>.0-openjdk-<arch>
+#            symlinks alongside for update-java-alternatives, which still
+#            speaks the pre-JEP-223 version scheme. Symlinks are skipped.
+#
+#   Windows  Eclipse Adoptium (Temurin) under C:\Program Files, named
+#            jdk-<ver>.<patch>-hotspot. Other vendors install elsewhere
+#            (Microsoft under Microsoft\, Corretto under Amazon Corretto\)
+#            and are not discovered.
+#
+# $JAVA_HOME is set in native form on each platform -- POSIX on Linux,
+# Windows on Windows via cygpath -- because it is read by native Java
+# tools. The $PATH entry stays POSIX on both, since that is what MSYS2
+# expects.
+#
+# Uses `set -gx`, so different fish instances can select their own JDK.
+
 function jdk_version --description 'Setup JDK environment'
 
     set -f jdk_version_number
@@ -19,10 +40,10 @@ function jdk_version --description 'Setup JDK environment'
             set jvm_dirs_and_links /usr/lib/jvm/java-*-openjdk*
         case '*'
             if set -q GRS_OS
-                printf 'Unsupported OS: %s\n' "$GRS_OS"
+                printf 'Unsupported OS: %s\n' "$GRS_OS" >&2
                 return 1
             else
-                printf 'GRS_OS not defined'
+                printf 'GRS_OS not defined\n' >&2
                 return 1
             end
     end
@@ -60,7 +81,7 @@ function jdk_version --description 'Setup JDK environment'
     switch $GRS_OS
         case windows
             set -f java_home /c/Program\ Files/Eclipse\ Adoptium/jdk-{$jdk_version_number}.*-hotspot
-            set -f java_location 'C:\\Program Files\\Eclipse Adoptium'
+            set -f java_location C:\\Program\ Files\\Eclipse\ Adoptium
         case linux
             set -f java_home /usr/lib/jvm/java-{$jdk_version_number}-openjdk-*
             set -f java_location /usr/lib/jvm
@@ -84,11 +105,13 @@ function jdk_version --description 'Setup JDK environment'
     set -gx JDK_VERSION $jdk_version_number
 
     # Fix PATH
+    set -f match_str
     set -f index 0
+
     switch $GRS_OS
         case windows
             for ii in (seq 1 (count $PATH))
-                if string match -q '/c/Program\ Files/Eclipse\ Adoptium/jdk-*-hotspot/bin' $PATH[$ii]
+                if string match -q '/c/Program Files/Eclipse Adoptium/jdk-*-hotspot/bin' $PATH[$ii]
                     set index $ii
                     break
                 end
@@ -109,16 +132,16 @@ function jdk_version --description 'Setup JDK environment'
         set PATH[$index] $java_home/bin
     end
 
+    switch $GRS_OS
+        case windows
+            set match_str '/c/Program Files/Eclipse Adoptium/jdk-*-hotspot/bin'
+        case linux
+            set match_str '/usr/lib/jvm/java-*-openjdk*/bin'
+    end
+
     for ii in (seq (count $PATH) -1 (math $index + 1))
-        switch $GRS_OS
-            case windows
-                if string match -q '/c/Program\ Files/Eclipse\ Adoptium/jdk-*-hotspot/bin' $PATH[$ii]
-                    set -e PATH[$ii]
-                end
-            case linux
-                if string match -q '/usr/lib/jvm/java-*-openjdk*/bin' $PATH[$ii]
-                    set -e PATH[$ii]
-                end
+        if string match -q $match_str $PATH[$ii]
+            set -e PATH[$ii]
         end
     end
 
