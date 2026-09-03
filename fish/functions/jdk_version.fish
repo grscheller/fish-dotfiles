@@ -60,13 +60,15 @@ function jdk_version --description 'Setup JDK environment'
     switch $GRS_OS
         case windows
             set -f java_home /c/Program\ Files/Eclipse\ Adoptium/jdk-{$jdk_version_number}.*-hotspot
+            set -f java_location 'C:\\Program Files\\Eclipse Adoptium'
         case linux
             set -f java_home /usr/lib/jvm/java-{$jdk_version_number}-openjdk-*
+            set -f java_location /usr/lib/jvm
     end
 
     # Bail if Java version is not installed
     if not test -d "$java_home"
-        printf 'No JDK found for Java version %s in /usr/lib/jvm\n' $jdk_version_number >&2
+        printf 'No JDK found for Java version %s in %s\n' $jdk_version_number $java_location >&2
         return 1
     end
 
