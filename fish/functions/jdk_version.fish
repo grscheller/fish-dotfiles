@@ -66,9 +66,9 @@ function jdk_version --description 'Setup JDK environment'
         for jvm_dir in $jvm_dirs
             set -l jvm_dirs_split (string split - $jvm_dir)
             set jvm_dirs_split (string split . $jvm_dirs_split[2])
-            printf ' %s' $jvm_dirs_split[1]
+            printf ' %s' $jvm_dirs_split[1] >&2
         end
-        printf '\n'
+        printf '\n' >&2
         return 0
     end
 

@@ -46,13 +46,6 @@ or begin
     # Haskell locations used by Stack and Cabal
     set -p PATH ~/.local/bin ~/.cabal/bin $PATH
 
-    # Configure JDK & Scala - /usr/lib/jvm is Debian/Ubuntu layout
-    test -d /usr/lib/jvm
-    and begin
-        set -p PATH ~/.local/share/coursier/bin
-        jdk_version 25
-    end
-
     # Zig toolchain
     test -L ~/devel/zig_nightly/current
     and set -p PATH ~/devel/zig_nightly/current
@@ -60,6 +53,11 @@ or begin
     # Rust toolchain
     test -e ~/.cargo/env.fish
     and set -p PATH ~/.cargo/bin
+
+    # Configure JDK & Scala
+    test -d ~/.local/share/coursier/bin
+    and set -p PATH ~/.local/share/coursier/bin
+    jdk_version 25
 
     # Mason's bin directory
     test -d ~/.local/share/nvim/mason/bin
