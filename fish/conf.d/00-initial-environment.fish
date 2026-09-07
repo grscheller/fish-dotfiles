@@ -19,8 +19,33 @@ or begin
     switch (uname -s)
         case 'MSYS*' 'MINGW*' 'CYGWIN*'
             set -gx GRS_OS windows
+        case Linux
+            if test -r /etc/os-release
+            then
+                # shellcheck source=/dev/null
+                switch (string join ' ' '' (grep '^ID' /etc/os-release | sed 's/ID.*=//; s/"//g') '')
+                    case '* debian *'
+                        set -gx GRS_OS -- linux-debian
+                    case ' * rhel *' '* fedora *'
+                        set -gx GRS_OS -- linux-redhat-untested
+                    case '*'
+                        set -gx GRS_OS -- linux-unknown-unsupported
+                end
+            else
+                set -gx GRS_OS -- linux-unsupported
+            end
+        case Darwin
+            set -gx GRS_OS -- darwin-unsupported
+        case FreeBSD
+            set -gx GRS_OS -- freebsd-unsupported
+        case OpenBSD
+            set -gx GRS_OS -- openbsd-unsupported
+        case NetBSD
+            set -gx GRS_OS -- netbsd-unsupported
+        case DragonFlyBSD
+            set -gx GRS_OS -- netbsd-unsupported
         case '*'
-            set -gx GRS_OS linux
+            set -gx GRS_OS -- unknown-unsupported
     end
 
     set -gx FISH_VIRGIN_PATH_GRS $PATH
