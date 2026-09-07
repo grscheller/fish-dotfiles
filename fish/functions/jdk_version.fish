@@ -1,13 +1,13 @@
 # Setup the JDK environment for the current fish instance.
 #
-# Assumptions, both of which are deliberate rather than incidental:
+# Assumptions, which are deliberate rather than incidental:
 #
-#   Linux    Debian/Ubuntu layout -- JDKs under /usr/lib/jvm named
-#            java-<ver>-openjdk-<arch>, with java-1.<ver>.0-openjdk-<arch>
-#            symlinks alongside for update-java-alternatives, which still
-#            speaks the pre-JEP-223 version scheme. Symlinks are skipped.
+#   linux_debian  Debian/Ubuntu layout - JDKs under /usr/lib/jvm named
+#                 java-<ver>-openjdk-<arch>, with java-1.<ver>.0-openjdk-<arch>
+#                 symlinks alongside for update-java-alternatives, which still
+#                 speaks the pre-JEP-223 version scheme. Symlinks are skipped.
 #
-#   Windows  Eclipse Adoptium (Temurin) under C:\Program Files, named
+#   windows  Eclipse Adoptium (Temurin) under C:\Program Files, named
 #            jdk-<ver>.<patch>-hotspot. Other vendors install elsewhere
 #            (Microsoft under Microsoft\, Corretto under Amazon Corretto\)
 #            and are not discovered.
@@ -36,7 +36,7 @@ function jdk_version --description 'Setup JDK environment'
     switch $GRS_OS
         case windows
             set jvm_dirs_and_links /c/Program\ Files/Eclipse\ Adoptium/jdk-*-hotspot
-        case linux
+        case linux_debian
             set jvm_dirs_and_links /usr/lib/jvm/java-*-openjdk*
         case '*'
             if set -q GRS_OS
@@ -82,7 +82,7 @@ function jdk_version --description 'Setup JDK environment'
         case windows
             set -f java_home /c/Program\ Files/Eclipse\ Adoptium/jdk-{$jdk_version_number}.*-hotspot
             set -f java_location C:\\Program\ Files\\Eclipse\ Adoptium
-        case linux
+        case linux_debian
             set -f java_home /usr/lib/jvm/java-{$jdk_version_number}-openjdk-*
             set -f java_location /usr/lib/jvm
     end
@@ -97,7 +97,7 @@ function jdk_version --description 'Setup JDK environment'
     switch $GRS_OS
         case windows
             set -gx JAVA_HOME (cygpath -w $java_home)
-        case linux
+        case linux_debian
             set -gx JAVA_HOME $java_home
     end
 
@@ -116,7 +116,7 @@ function jdk_version --description 'Setup JDK environment'
                     break
                 end
             end
-        case linux
+        case linux_debian
             for ii in (seq 1 (count $PATH))
                 if string match -q '/usr/lib/jvm/java-*-openjdk*/bin' $PATH[$ii]
                     set index $ii
@@ -135,7 +135,7 @@ function jdk_version --description 'Setup JDK environment'
     switch $GRS_OS
         case windows
             set match_str '/c/Program Files/Eclipse Adoptium/jdk-*-hotspot/bin'
-        case linux
+        case linux_debian
             set match_str '/usr/lib/jvm/java-*-openjdk*/bin'
     end
 

@@ -18,7 +18,7 @@ if status is-interactive
     set -g fish_cursor_visual underscore blink
 
     # Set JDK_version managed Java environment
-    if test "$OS" != Windows_NT
+    if test "$GRS_OS" != linux_debian
         if set -q JDK_VERSION
             jdk_version $JDK_VERSION
         else

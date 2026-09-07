@@ -21,31 +21,29 @@ or begin
             set -gx GRS_OS windows
         case Linux
             if test -r /etc/os-release
-            then
-                # shellcheck source=/dev/null
                 switch (string join ' ' '' (grep '^ID' /etc/os-release | sed 's/ID.*=//; s/"//g') '')
                     case '* debian *'
-                        set -gx GRS_OS -- linux-debian
-                    case ' * rhel *' '* fedora *'
-                        set -gx GRS_OS -- linux-redhat-untested
+                        set -gx GRS_OS linux_debian
+                    case '* rhel *' '* fedora *'
+                        set -gx GRS_OS linux_redhat_untested
                     case '*'
-                        set -gx GRS_OS -- linux-unknown-unsupported
+                        set -gx GRS_OS linux_unknown_unsupported
                 end
             else
-                set -gx GRS_OS -- linux-unsupported
+                set -gx GRS_OS linux_unsupported
             end
         case Darwin
-            set -gx GRS_OS -- darwin-unsupported
+            set -gx GRS_OS darwin_unsupported
         case FreeBSD
-            set -gx GRS_OS -- freebsd-unsupported
+            set -gx GRS_OS freebsd_unsupported
         case OpenBSD
-            set -gx GRS_OS -- openbsd-unsupported
+            set -gx GRS_OS openbsd_unsupported
         case NetBSD
-            set -gx GRS_OS -- netbsd-unsupported
-        case DragonFlyBSD
-            set -gx GRS_OS -- netbsd-unsupported
+            set -gx GRS_OS netbsd_unsupported
+        case DragonFly
+            set -gx GRS_OS dragonflybsd_unsupported
         case '*'
-            set -gx GRS_OS -- unknown-unsupported
+            set -gx GRS_OS unknown_unsupported
     end
 
     set -gx FISH_VIRGIN_PATH_GRS $PATH
