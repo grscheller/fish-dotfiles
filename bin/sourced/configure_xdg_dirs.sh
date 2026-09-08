@@ -15,14 +15,11 @@
 
 export XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME XDG_CACHE_HOME
 
-if test "$OS_GRS" != windows
-then
-    ensure_dir "$XDG_CONFIG_HOME" >&2
-    chmod 0755 "$XDG_CONFIG_HOME"
-    ensure_dir "$XDG_DATA_HOME" >&2
-    chmod 0755 "$XDG_DATA_HOME"
-    ensure_dir "$XDG_STATE_HOME" >&2
-    chmod 0755 "$XDG_STATE_HOME"
-    ensure_dir "$XDG_CACHE_HOME" >&2
-    chmod 0755 "$XDG_CACHE_HOME"
-fi
+ensure_dir "$XDG_CONFIG_HOME" >&2
+chmod 0755 "$XDG_CONFIG_HOME"
+ensure_dir "$XDG_DATA_HOME" >&2
+chmod 0755 "$XDG_DATA_HOME"
+ensure_dir "$XDG_STATE_HOME" >&2
+chmod 0755 "$XDG_STATE_HOME"
+ensure_dir "$XDG_CACHE_HOME" >&2
+chmod 0755 "$XDG_CACHE_HOME"
