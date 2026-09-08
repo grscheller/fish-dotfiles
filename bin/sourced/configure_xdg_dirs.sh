@@ -1,16 +1,13 @@
-## Setup XDG Desktop folder locations
+# Setup XDG Desktop folder locations
 #
-# grscheller/fish-dotfiles uses XDG names in its setup scripts.
+# XDG names are used in the install scripts.
 #
 # - defaults to standard locations if not already defined
 #   - can override in shell for multiple configs to exist
 #   - fish on LINUX or MSYS2 uses these when exported
 # - tries to ensure XDG directories exist
-# - XDG names can be overridden for multiple configurations to coexist
 #
 # shellcheck shell=sh
-
-# Script uses XDG Desktop names, even on Windows 11
 
 : "${XDG_CONFIG_HOME:=$HOME/.config}"
 : "${XDG_DATA_HOME:=$HOME/.local/share}"
