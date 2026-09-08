@@ -1,4 +1,4 @@
-#!/bin/dash
+#!/bin/sh
 #
 # Installs Fish Shell configuration files into
 # the user's $HOME directory.
@@ -28,6 +28,7 @@ umask 0022
 
 . ../bin/sourced/parse_cmdline.sh
 . ../bin/sourced/functions.sh
+. ../bin/sourced/determine_os.sh
 . ../bin/sourced/configure_xdg_dirs.sh
 
 config_files='

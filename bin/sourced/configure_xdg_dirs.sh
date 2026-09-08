@@ -10,27 +10,20 @@
 #
 # shellcheck shell=sh
 
-# Script use XDG Desktop names, even on Windows 11
+# Script uses XDG Desktop names, even on Windows 11
 
-if test "$OS" = Windows_NT
+: "${XDG_CONFIG_HOME:=$HOME/.config}"
+: "${XDG_DATA_HOME:=$HOME/.local/share}"
+: "${XDG_STATE_HOME:=$HOME/.local/state}"
+: "${XDG_CACHE_HOME:=$HOME/.cache}"
+
+if test "$OS_GRS" = windows
 then
     # Window 11
     _local_app_data="$(cygpath -u "$LOCALAPPDATA")"
     : "${WIN_LOCAL_APP_DATA:=$_local_app_data}"
     : "${WIN_CACHE_HOME:=$_local_app_data/Temp}"
     unset _local_app_data
-    : "${XDG_CONFIG_HOME:=$HOME/.config}"
-    : "${XDG_DATA_HOME:=$HOME/.local/share}"
-    : "${XDG_STATE_HOME:=$HOME/.local/state}"
-    : "${XDG_CACHE_HOME:=$HOME/.cache}"
-else
-    # Linux
-    : "${WIN_LOCAL_APP_DATA:=}"
-    : "${WIN_CACHE_HOME:=}"
-    : "${XDG_CONFIG_HOME:=$HOME/.config}"
-    : "${XDG_DATA_HOME:=$HOME/.local/share}"
-    : "${XDG_STATE_HOME:=$HOME/.local/state}"
-    : "${XDG_CACHE_HOME:=$HOME/.cache}"
 fi
 
 export XDG_CONFIG_HOME XDG_DATA_HOME XDG_STATE_HOME XDG_CACHE_HOME

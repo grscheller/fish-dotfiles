@@ -15,35 +15,35 @@
 
 set -q FISH_VIRGIN_PATH_GRS
 or begin
-
+    # Determine which OS fish is running on
     switch (uname -s)
         case 'MSYS*' 'MINGW*' 'CYGWIN*'
-            set -gx GRS_OS windows
+            set -gx OS_GRS windows
         case Linux
             if test -r /etc/os-release
                 switch (string join ' ' '' (grep '^ID' /etc/os-release | sed 's/ID.*=//; s/"//g') '')
                     case '* debian *'
-                        set -gx GRS_OS linux_debian
+                        set -gx OS_GRS linux_debian
                     case '* rhel *' '* fedora *'
-                        set -gx GRS_OS linux_redhat_untested
+                        set -gx OS_GRS linux_redhat_untested
                     case '*'
-                        set -gx GRS_OS linux_unknown_unsupported
+                        set -gx OS_GRS linux_unknown_unsupported
                 end
             else
-                set -gx GRS_OS linux_unsupported
+                set -gx OS_GRS linux_unsupported
             end
         case Darwin
-            set -gx GRS_OS darwin_unsupported
+            set -gx OS_GRS darwin_unsupported
         case FreeBSD
-            set -gx GRS_OS freebsd_unsupported
+            set -gx OS_GRS freebsd_unsupported
         case OpenBSD
-            set -gx GRS_OS openbsd_unsupported
+            set -gx OS_GRS openbsd_unsupported
         case NetBSD
-            set -gx GRS_OS netbsd_unsupported
+            set -gx OS_GRS netbsd_unsupported
         case DragonFly
-            set -gx GRS_OS dragonflybsd_unsupported
+            set -gx OS_GRS dragonflybsd_unsupported
         case '*'
-            set -gx GRS_OS unknown_unsupported
+            set -gx OS_GRS unknown_unsupported
     end
 
     set -gx FISH_VIRGIN_PATH_GRS $PATH

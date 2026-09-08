@@ -33,17 +33,17 @@ function jdk_version --description 'Setup JDK environment'
     # Make sure at least one Java JDK is installed in default location
     set -f jvm_dir jvm_dirs jvm_dirs_and_links
 
-    switch $GRS_OS
+    switch $OS_GRS
         case windows
             set jvm_dirs_and_links /c/Program\ Files/Eclipse\ Adoptium/jdk-*-hotspot
         case linux_debian
             set jvm_dirs_and_links /usr/lib/jvm/java-*-openjdk*
         case '*'
-            if set -q GRS_OS
-                printf 'Unsupported OS: %s\n' "$GRS_OS" >&2
+            if set -q OS_GRS
+                printf 'Unsupported OS: %s\n' "$OS_GRS" >&2
                 return 1
             else
-                printf 'GRS_OS not defined\n' >&2
+                printf 'OS_GRS not defined\n' >&2
                 return 1
             end
     end
@@ -78,7 +78,7 @@ function jdk_version --description 'Setup JDK environment'
         return 1
     end
 
-    switch $GRS_OS
+    switch $OS_GRS
         case windows
             set -f java_home /c/Program\ Files/Eclipse\ Adoptium/jdk-{$jdk_version_number}.*-hotspot
             set -f java_location C:\\Program\ Files\\Eclipse\ Adoptium
@@ -94,7 +94,7 @@ function jdk_version --description 'Setup JDK environment'
     end
 
     # Set JAVA_HOME
-    switch $GRS_OS
+    switch $OS_GRS
         case windows
             set -gx JAVA_HOME (cygpath -w $java_home)
         case linux_debian
@@ -108,7 +108,7 @@ function jdk_version --description 'Setup JDK environment'
     set -f match_str
     set -f index 0
 
-    switch $GRS_OS
+    switch $OS_GRS
         case windows
             for ii in (seq 1 (count $PATH))
                 if string match -q '/c/Program Files/Eclipse Adoptium/jdk-*-hotspot/bin' $PATH[$ii]
@@ -132,7 +132,7 @@ function jdk_version --description 'Setup JDK environment'
         set PATH[$index] $java_home/bin
     end
 
-    switch $GRS_OS
+    switch $OS_GRS
         case windows
             set match_str '/c/Program Files/Eclipse Adoptium/jdk-*-hotspot/bin'
         case linux_debian
