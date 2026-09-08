@@ -8,8 +8,9 @@ case $(uname -s) in
     Linux)
         if test -r /etc/os-release
         then
+            _os_ids=$(. /etc/os-release; printf ' %s %s ' "$ID" "$ID_LIKE")
             . /etc/os-release
-            case " $ID $ID_LIKE " in
+            case "$_os_ids" in
                 *' debian '*)
                     OS_GRS=linux_debian
                     ;;
@@ -44,3 +45,4 @@ case $(uname -s) in
         ;;
 esac
 export OS_GRS
+unset _os_ids
