@@ -67,7 +67,6 @@ config_files='
     functions/pv.fish
     functions/rc.fish
     functions/tm.fish
-    functions/ve.fish
     functions/Wget.fish
     functions/WgetM.fish
     functions/b2b.fish
@@ -90,7 +89,9 @@ config_files='
     fish_plugins
 '
 
-remove_items=''
+remove_items='
+    $XDG_CONFIG_HOME/fish/functions/ve.fish
+'
 
 dirs_to_create=""
 
