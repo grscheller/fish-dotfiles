@@ -7,10 +7,10 @@ abbr -a gc git commit
 abbr -a gco git checkout
 abbr -a gd git diff
 abbr -a gf git fetch
-abbr -a gh git push
+abbr -a gsh git push
 abbr -a gl git log
 abbr -a gm git mv
-abbr -a gp git pull
+abbr -a gpu git pull
 abbr -a gs git status
 abbr -a gtl 'git tag --list|cat'
 abbr -a gsw git switch
