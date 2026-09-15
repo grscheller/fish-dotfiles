@@ -74,7 +74,7 @@ or begin
     and set -p PATH ~/devel/zig_nightly/current
 
     # Rust toolchain
-    test -e ~/.cargo/env.fish
+    test -e ~/.cargo/bin
     and set -p PATH ~/.cargo/bin
 
     # Configure JDK & Scala
