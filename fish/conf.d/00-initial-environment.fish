@@ -88,8 +88,8 @@ or begin
 
     # Python configuration
     set -gx PIP_REQUIRE_VIRTUALENV true
-    set -gx MYPY_CACHE_DIR="$HOME/.cache/mypy"
-    set -gx RUFF_CACHE_DIR="$HOME/.cache/ruff"
+    set -gx MYPY_CACHE_DIR ~/.cache/mypy
+    set -gx RUFF_CACHE_DIR ~/.cache/ruff
 
     # For Windows, locations for git, nvim and openssh
     set -l prog_files '/c/Program Files'
