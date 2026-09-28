@@ -40,7 +40,7 @@ config_files='
     conf.d/51-colors.fish
     conf.d/70-rustup.fish
     functions/ax.fish
-    functions/check_wheel.fish
+    functions/check_dist.fish
     functions/cu.fish
     functions/dotf.fish
     functions/fdg.fish
@@ -92,6 +92,7 @@ config_files='
 
 remove_items='
     $XDG_CONFIG_HOME/fish/functions/ve.fish
+    $XDG_CONFIG_HOME/fish/functions/check_wheel.fish
 '
 
 dirs_to_create=""
