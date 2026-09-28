@@ -13,6 +13,12 @@ function check_dist --description 'check PyPI build artifacts for clutter'
         return 1
     end
 
+    set -f sdists (ls dist/ | string match '*.tar.gz')
+    if test (count $sdists) -ne 1
+        printf 'Expected exactly one sdist, found %d\n' (count $sdists) >&2
+        return 1
+    end
+
     set -f found (python -m zipfile -l dist/$wheels[1] | string match -r $clutter)
     if test (count $found) -gt 0
         printf 'POLLUTED wheel — do not publish\n'
@@ -22,7 +28,6 @@ function check_dist --description 'check PyPI build artifacts for clutter'
         printf 'Wheel clean\n'
     end
 
-    set -f sdists (ls dist/ | string match '*.tar.gz')
     if test (count $sdists) -eq 1
         set -f found (tar -tzf dist/$sdists[1] | string match -r $clutter)
         if test (count $found) -gt 0
